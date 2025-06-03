@@ -1,0 +1,3679 @@
+{
+    "tags": [
+        "d2d",
+        "d2dv2",
+        "D2D"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Init",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "EXEC_MODE",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [
+                                    {
+                                        "name": "variableName",
+                                        "const": "D2D_EXEC_MODE"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Keys Uppercase",
+                            "actorType": {
+                                "parentType": "Uppercase",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "LU Type SRC",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "LU Type TAR",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Exclude Condition",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Test S",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "S"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Test T",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "T"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "EXECUTION ID",
+                            "actorType": {
+                                "parentType": "GetD2DExecutionID",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Prepare",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "F2F ?",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "EqualsIgnoreCase",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "F2F"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SEPERATOR",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [
+                                    {
+                                        "name": "variableName",
+                                        "const": "D2D_CONF_SEPERATOR"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "RESULT_INTERFACE",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [
+                                    {
+                                        "name": "variableName",
+                                        "const": "D2D_RESULT_INTERFACE"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "LOAD_SCHEMA",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [
+                                    {
+                                        "name": "variableName",
+                                        "const": "D2D_LOAD_SCHEMA"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Mismatch_Columns",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Exclude Clause",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": " where ${where} "
+                                    },
+                                    {
+                                        "name": "where",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Source Interface Key",
+                            "actorType": {
+                                "parentType": "IfElse",
+                                "inputs": [
+                                    {
+                                        "name": "a",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "D2D_FABRIC_INTERFACE_SRC"
+                                    },
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "D2D_FABRIC_INTERFACE_TAR"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Target Interface Key",
+                            "actorType": {
+                                "parentType": "IfElse",
+                                "inputs": [
+                                    {
+                                        "name": "a",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "D2D_FABRIC_INTERFACE_SRC"
+                                    },
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "D2D_FABRIC_INTERFACE_TAR"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Prepare Contd.",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Split1",
+                            "actorType": {
+                                "parentType": "Split",
+                                "inputs": [
+                                    {
+                                        "name": "delimiter",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ReplaceDelimeter",
+                            "actorType": {
+                                "parentType": "Replace",
+                                "inputs": [
+                                    {
+                                        "name": "search",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "replace",
+                                        "const": ", "
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "GetSummaryTables",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwGetSummaryTableNames"
+                                    },
+                                    {
+                                        "name": "interface",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "field_summary",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "record_summary",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "table_summary",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "entity_summary",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "IfElse1",
+                            "actorType": {
+                                "parentType": "IfElse",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "SRC Interface",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "TAR Interface",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 7",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Build Columns",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": " ${column} as \"${env}${column}\""
+                                    },
+                                    {
+                                        "name": "column",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "env",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 10",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "Append Columns",
+                            "actorType": {
+                                "parentType": "StringBuild",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 2",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "QuerySrc4Keys",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "select ${str} from ${schema}.${prefix}${sourceTableName}  ${where}"
+                                    },
+                                    {
+                                        "name": "str",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "sourceTableName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "where",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "prefix",
+                                        "schema": {},
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "${@schema}",
+                                        "name": "schema",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "QueryTar4Keys",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "select ${str} from ${schema}.${prefix}${targetTableName}  ${where}"
+                                    },
+                                    {
+                                        "name": "str",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "targetTableName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "where",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "prefix",
+                                        "schema": {},
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "${@schema}",
+                                        "name": "schema",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 3",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Table not Found ErrorHandler source",
+                            "onError": "result",
+                            "actorType": {
+                                "parentType": "ErrorHandler",
+                                "inputs": [
+                                    {
+                                        "name": "config",
+                                        "const": [
+                                            {
+                                                "exceptionKey": "java.lang.Exception",
+                                                "conditions": {
+                                                    "message": ""
+                                                },
+                                                "actions": {
+                                                    "suppress": true,
+                                                    "log": false,
+                                                    "flowName": "bwD2DTableNotFound"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name": "luTypeSrc",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "sourceTableName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "tableSummaryName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "execution_id",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "iid",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "targetTableName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "Source",
+                                        "name": "origin",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "editor": {
+                                            "id": "com.k2view.dropdown",
+                                            "options": [
+                                                "Source",
+                                                "Target"
+                                            ]
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "GetKeyValuesSrc",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "ACTIVITY_ID": {
+                                                        "type": "integer"
+                                                    },
+                                                    "CUSTOMER_ID": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 9",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Table not Found ErrorHandler Target",
+                            "onError": "result",
+                            "actorType": {
+                                "parentType": "ErrorHandler",
+                                "inputs": [
+                                    {
+                                        "name": "config",
+                                        "const": [
+                                            {
+                                                "exceptionKey": "java.lang.Exception",
+                                                "conditions": {
+                                                    "message": ""
+                                                },
+                                                "actions": {
+                                                    "suppress": true,
+                                                    "log": false,
+                                                    "flowName": "bwD2DTableNotFound"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name": "luTypeSrc",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "sourceTableName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "tableSummaryName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "execution_id",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "iid",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "targetTableName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "Target",
+                                        "name": "origin",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "editor": {
+                                            "id": "com.k2view.dropdown",
+                                            "options": [
+                                                "Source",
+                                                "Target"
+                                            ]
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "GetKeyValuesTar",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "ACTIVITY_ID": {
+                                                        "type": "integer"
+                                                    },
+                                                    "CUSTOMER_ID": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 13",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "DeepCopy Source RS",
+                            "actorType": {
+                                "parentType": "DeepCopy",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "source_additional_phone": {
+                                                        "type": "string"
+                                                    },
+                                                    "source_birthday": {
+                                                        "type": "date"
+                                                    },
+                                                    "source_customer_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "source_email": {
+                                                        "type": "string"
+                                                    },
+                                                    "source_first_name": {
+                                                        "type": "string"
+                                                    },
+                                                    "source_id_number": {
+                                                        "type": "string"
+                                                    },
+                                                    "source_last_name": {
+                                                        "type": "string"
+                                                    },
+                                                    "source_occupation": {
+                                                        "type": "string"
+                                                    },
+                                                    "source_primary_phone": {
+                                                        "type": "string"
+                                                    },
+                                                    "source_social_net_fb": {
+                                                        "type": "string"
+                                                    },
+                                                    "source_social_net_lnk": {
+                                                        "type": "string"
+                                                    },
+                                                    "source_social_net_tw": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "DeepCopy Target RS",
+                            "actorType": {
+                                "parentType": "DeepCopy",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "target_additional_phone": {
+                                                        "type": "string"
+                                                    },
+                                                    "target_birthday": {
+                                                        "type": "date"
+                                                    },
+                                                    "target_customer_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "target_email": {
+                                                        "type": "string"
+                                                    },
+                                                    "target_first_name": {
+                                                        "type": "string"
+                                                    },
+                                                    "target_id_number": {
+                                                        "type": "string"
+                                                    },
+                                                    "target_last_name": {
+                                                        "type": "string"
+                                                    },
+                                                    "target_occupation": {
+                                                        "type": "string"
+                                                    },
+                                                    "target_primary_phone": {
+                                                        "type": "string"
+                                                    },
+                                                    "target_social_net_fb": {
+                                                        "type": "string"
+                                                    },
+                                                    "target_social_net_lnk": {
+                                                        "type": "string"
+                                                    },
+                                                    "target_social_net_tw": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 5",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Source RS Passthrough",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object"
+                                        },
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ConstStrings1",
+                            "actorType": {
+                                "parentType": "ConstStrings",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 4",
+                    "dependsOnList": [
+                        "Stage 5"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "IfTarNotEmpty",
+                            "remark": "If TAR result set is not empty - check if there is a match for each SRC row in TAR",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "NotEquals",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Source",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "ACTIVITY_ID": {
+                                                    "type": "integer"
+                                                },
+                                                "CUSTOMER_ID": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Target",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "ACTIVITY_ID": {
+                                                        "type": "integer"
+                                                    },
+                                                    "CUSTOMER_ID": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Set Loop Var",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "flowArgs.keyFound = false;"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [
+                        "Stage 5"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "Const1",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "ACTIVITY_ID": {
+                                                        "type": "integer"
+                                                    },
+                                                    "CUSTOMER_ID": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "LoopStop1",
+                            "actorType": {
+                                "parentType": "LoopStop",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 11",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "remark": "For each SRC row check if there is a match in TAR table",
+                    "actors": [
+                        {
+                            "name": "MapDiffD2D2",
+                            "actorType": {
+                                "parentType": "MapDiffD2D",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "map",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "CONTRACT_ID": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 12",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "remark": "If there is a match - set flag and continue to next row",
+                    "actors": [
+                        {
+                            "name": "CheckMatch",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "object"
+                                        },
+                                        "const": {}
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "MatchFlag",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "flowArgs.keyFound = true;"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ContinueToNext",
+                            "actorType": {
+                                "parentType": "LoopStop",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 8",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "remark": "Check if no match found - then add value into result array\n",
+                    "actors": [
+                        {
+                            "name": "CheckMatchFlag",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "!flowArgs.keyFound;"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "CreateFieldsArray",
+                            "actorType": {
+                                "parentType": "ArrayBuilder",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "array",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "source_CUSTOMER_ID": {
+                                                        "type": "string"
+                                                    },
+                                                    "source_FIRST_NAME": {
+                                                        "type": "string"
+                                                    },
+                                                    "source_LAST_NAME": {
+                                                        "type": "string"
+                                                    },
+                                                    "source_SSN": {
+                                                        "type": "string"
+                                                    },
+                                                    "target_CUSTOMER_ID": {
+                                                        "type": "string"
+                                                    },
+                                                    "target_FIRST_NAME": {
+                                                        "type": "string"
+                                                    },
+                                                    "target_LAST_NAME": {
+                                                        "type": "string"
+                                                    },
+                                                    "target_SSN": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "CreateKeysArray",
+                            "actorType": {
+                                "parentType": "ArrayBuilder",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "array",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "ACTIVITY_ID": {
+                                                        "type": "integer"
+                                                    },
+                                                    "CUSTOMER_ID": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Get Array and Execution Id",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "remark": "Use result from compare loop, or pass entire SRC table if TAR table is empty",
+                    "actors": [
+                        {
+                            "name": "Array Pass Through",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "ACTIVITY_ID": {
+                                                        "type": "integer"
+                                                    },
+                                                    "CUSTOMER_ID": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "KeysArrayPassThrough",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "ACTIVITY_ID": {
+                                                        "type": "integer"
+                                                    },
+                                                    "CUSTOMER_ID": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Loop Through Each Column",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "MissingFields",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Keys",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "ACTIVITY_ID": {
+                                                    "type": "integer"
+                                                },
+                                                "CUSTOMER_ID": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Prepare List",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "List Fields",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": {
+                                            "userCode": "var res = [];\r\nfor(var key in obj){\r\n    res.push({\"key\":key,\"value\":obj[key]})\r\n}\r\n\r\nres;",
+                                            "script": "var res = [];\n\nfor (var key in obj) {\n  res.push({\n    \"key\": key,\n    \"value\": obj[key]\n  });\n}\n\nres;"
+                                        }
+                                    },
+                                    {
+                                        "name": "obj",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "CUSTOMER_ID": {
+                                                    "type": "integer"
+                                                },
+                                                "CONTRACT_ID": {
+                                                    "type": "integer"
+                                                },
+                                                "CONTRACT_REF_ID": {
+                                                    "type": "integer"
+                                                },
+                                                "ASSOCIATED_LINE": {
+                                                    "type": "string"
+                                                },
+                                                "CONTRACT_DESCRIPTION": {
+                                                    "type": "string"
+                                                },
+                                                "FROM_DATE": {
+                                                    "type": "string"
+                                                },
+                                                "TO_DATE": {
+                                                    "type": "string"
+                                                },
+                                                "ASSOCIATED_LINE_FMT": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Get Customized Key",
+                            "actorType": {
+                                "parentType": "LuFunction",
+                                "inputs": [
+                                    {
+                                        "name": "functionName",
+                                        "const": "fnD2DGetCustomizedKey"
+                                    },
+                                    {
+                                        "name": "rowMap",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {}
+                                        }
+                                    },
+                                    {
+                                        "name": "customizedKey",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "customizedKey",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Each Field",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "Field",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "key": {
+                                                    "type": "string"
+                                                },
+                                                "value": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Transform",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "Target Secured?",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": {
+                                            "userCode": "var res = false;\r\ncolumns.split(delimitter).forEach(function (column) {\r\n    res = res || (column.trim().toUpperCase() == column_name.toUpperCase());\r\n});\r\n\r\nif(res && result == 'Match' && value != null && value.trim() != ''){\r\n    \"false\";\r\n} else {\r\n    \"true\";\r\n}",
+                                            "script": "var res = false;\ncolumns.split(delimitter).forEach(function (column) {\n  res = res || column.trim().toUpperCase() == column_name.toUpperCase();\n});\n\nif (res && result == 'Match' && value != null && value.trim() != '') {\n  \"false\";\n} else {\n  \"true\";\n}"
+                                        }
+                                    },
+                                    {
+                                        "name": "columns",
+                                        "const": "",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false,
+                                        "isDefault": true
+                                    },
+                                    {
+                                        "name": "column_name",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "result",
+                                        "const": "Mismatch",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false,
+                                        "isDefault": true
+                                    },
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "delimitter",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Load Results",
+                    "dependsOnList": [
+                        "Transform"
+                    ],
+                    "isLast": 1,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "For SOURCE",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": {
+                                            "userCode": "if(Search_IND == 'T'){\r\n    false\r\n}else{\r\n    true\r\n}",
+                                            "script": "if (Search_IND == 'T') {\n  false;\n} else {\n  true;\n}"
+                                        }
+                                    },
+                                    {
+                                        "name": "Search_IND",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "D2D Validation Source Results",
+                            "actorType": {
+                                "parentType": "DbLoad",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            "EXECUTION_ID",
+                                            "IID",
+                                            "SOURCE_TABLE_NAME",
+                                            "TARGET_TABLE_NAME",
+                                            "CUSTOMIZED_KEY",
+                                            "COLUMN_NAME",
+                                            "MATCH_RESULT",
+                                            "TARGET_VALUE_SECURED",
+                                            "SOURCE_COLUMN_VALUE",
+                                            "TARGET_COLUMN_VALUE",
+                                            "SOURCE_COLUMN_VALUE_TRANS",
+                                            "TARGET_COLUMN_VALUE_TRANS"
+                                        ]
+                                    },
+                                    {
+                                        "name": "keys",
+                                        "const": [
+                                            "EXECUTION_ID",
+                                            "IID",
+                                            "SOURCE_TABLE_NAME",
+                                            "TARGET_TABLE_NAME",
+                                            "CUSTOMIZED_KEY",
+                                            "COLUMN_NAME"
+                                        ]
+                                    },
+                                    {
+                                        "name": "EXECUTION_ID",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "IID",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "SOURCE_TABLE_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_TABLE_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "CUSTOMIZED_KEY",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "COLUMN_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "MATCH_RESULT",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "SOURCE_COLUMN_VALUE",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_COLUMN_VALUE",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "SOURCE_COLUMN_VALUE_TRANS",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_COLUMN_VALUE_TRANS",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_VALUE_SECURED",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "D2D Validation in DB",
+                            "actorType": {
+                                "parentType": "DbLoad",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric",
+                                        "isDefault": true
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            "EXECUTION_ID",
+                                            "IID",
+                                            "SOURCE_TABLE_NAME",
+                                            "TARGET_TABLE_NAME",
+                                            "CUSTOMIZED_KEY",
+                                            "COLUMN_NAME",
+                                            "MATCH_RESULT",
+                                            "TARGET_VALUE_SECURED",
+                                            "SOURCE_COLUMN_VALUE",
+                                            "TARGET_COLUMN_VALUE",
+                                            "SOURCE_COLUMN_VALUE_TRANS",
+                                            "TARGET_COLUMN_VALUE_TRANS"
+                                        ]
+                                    },
+                                    {
+                                        "name": "keys",
+                                        "const": [
+                                            "EXECUTION_ID",
+                                            "IID",
+                                            "SOURCE_TABLE_NAME",
+                                            "TARGET_TABLE_NAME",
+                                            "CUSTOMIZED_KEY",
+                                            "COLUMN_NAME"
+                                        ]
+                                    },
+                                    {
+                                        "name": "EXECUTION_ID",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "IID",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "SOURCE_TABLE_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_TABLE_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "CUSTOMIZED_KEY",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "COLUMN_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "MATCH_RESULT",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "SOURCE_COLUMN_VALUE",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_COLUMN_VALUE",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "SOURCE_COLUMN_VALUE_TRANS",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_COLUMN_VALUE_TRANS",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_VALUE_SECURED",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Load Results Target",
+                    "dependsOnList": [
+                        "Transform"
+                    ],
+                    "isLast": 1,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "D2D Validation Target Results",
+                            "remark": "Column SOURCE_TABLE_NAME mapped to external parameter targetTableName and column  TARGET_TABLE_NAME mapped to external parameter sourceTableName",
+                            "actorType": {
+                                "parentType": "DbLoad",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            "EXECUTION_ID",
+                                            "IID",
+                                            "SOURCE_TABLE_NAME",
+                                            "TARGET_TABLE_NAME",
+                                            "CUSTOMIZED_KEY",
+                                            "COLUMN_NAME",
+                                            "MATCH_RESULT",
+                                            "TARGET_VALUE_SECURED",
+                                            "SOURCE_COLUMN_VALUE",
+                                            "TARGET_COLUMN_VALUE",
+                                            "SOURCE_COLUMN_VALUE_TRANS",
+                                            "TARGET_COLUMN_VALUE_TRANS"
+                                        ]
+                                    },
+                                    {
+                                        "name": "keys",
+                                        "const": [
+                                            "EXECUTION_ID",
+                                            "IID",
+                                            "SOURCE_TABLE_NAME",
+                                            "TARGET_TABLE_NAME",
+                                            "CUSTOMIZED_KEY",
+                                            "COLUMN_NAME"
+                                        ]
+                                    },
+                                    {
+                                        "name": "EXECUTION_ID",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "IID",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "SOURCE_TABLE_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_TABLE_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "CUSTOMIZED_KEY",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "COLUMN_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "MATCH_RESULT",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "SOURCE_COLUMN_VALUE",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_COLUMN_VALUE",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "SOURCE_COLUMN_VALUE_TRANS",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_COLUMN_VALUE_TRANS",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_VALUE_SECURED",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "D2D Validation Target In DB",
+                            "remark": "Column SOURCE_TABLE_NAME mapped to external parameter targetTableName and column  TARGET_TABLE_NAME mapped to external parameter sourceTableName",
+                            "actorType": {
+                                "parentType": "DbLoad",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric",
+                                        "isDefault": true
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            "EXECUTION_ID",
+                                            "IID",
+                                            "SOURCE_TABLE_NAME",
+                                            "TARGET_TABLE_NAME",
+                                            "CUSTOMIZED_KEY",
+                                            "COLUMN_NAME",
+                                            "MATCH_RESULT",
+                                            "TARGET_VALUE_SECURED",
+                                            "SOURCE_COLUMN_VALUE",
+                                            "TARGET_COLUMN_VALUE",
+                                            "SOURCE_COLUMN_VALUE_TRANS",
+                                            "TARGET_COLUMN_VALUE_TRANS"
+                                        ]
+                                    },
+                                    {
+                                        "name": "keys",
+                                        "const": [
+                                            "EXECUTION_ID",
+                                            "IID",
+                                            "SOURCE_TABLE_NAME",
+                                            "TARGET_TABLE_NAME",
+                                            "CUSTOMIZED_KEY",
+                                            "COLUMN_NAME"
+                                        ]
+                                    },
+                                    {
+                                        "name": "EXECUTION_ID",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "IID",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "SOURCE_TABLE_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_TABLE_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "CUSTOMIZED_KEY",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "COLUMN_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "MATCH_RESULT",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "SOURCE_COLUMN_VALUE",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_COLUMN_VALUE",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "SOURCE_COLUMN_VALUE_TRANS",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_COLUMN_VALUE_TRANS",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "TARGET_VALUE_SECURED",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Outer Loop Close",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 6",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "EXEC_MODE",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "F2F ?",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Keys Uppercase",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Split1",
+                "name": "string"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "LU Type SRC",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "GetKeyValuesSrc",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "LU Type TAR",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "GetKeyValuesTar",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Exclude Condition",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Exclude Clause",
+                "name": "where"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Exclude Condition",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IfElse1",
+                "name": "test"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Test S",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Source Interface Key",
+                "name": "test"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Test T",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Target Interface Key",
+                "name": "test"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "EXECUTION ID",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Source Results",
+                "name": "EXECUTION_ID"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "EXECUTION ID",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target Results",
+                "name": "EXECUTION_ID"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "EXECUTION ID",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "D2D Validation in DB",
+                "name": "EXECUTION_ID"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "EXECUTION ID",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target In DB",
+                "name": "EXECUTION_ID"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "EXECUTION ID",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Table not Found ErrorHandler source",
+                "name": "execution_id"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "EXECUTION ID",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Table not Found ErrorHandler Target",
+                "name": "execution_id"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SEPERATOR",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "Split1",
+                "name": "delimiter"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "RESULT_INTERFACE",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "GetSummaryTables",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "RESULT_INTERFACE",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "D2D Validation in DB",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "RESULT_INTERFACE",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target In DB",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "LOAD_SCHEMA",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "D2D Validation in DB",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "LOAD_SCHEMA",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target In DB",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Mismatch_Columns",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Target Secured?",
+                "name": "columns"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Exclude Clause",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "IfElse1",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Source Interface Key",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "SRC Interface",
+                "name": "variableName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Target Interface Key",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "TAR Interface",
+                "name": "variableName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Split1",
+                "name": "strings"
+            },
+            "rightPort": {
+                "actor": "Build Columns",
+                "name": "column"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "GetSummaryTables",
+                "name": "field_summary"
+            },
+            "rightPort": {
+                "actor": "D2D Validation in DB",
+                "name": "table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "GetSummaryTables",
+                "name": "field_summary"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target In DB",
+                "name": "table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "GetSummaryTables",
+                "name": "table_summary"
+            },
+            "rightPort": {
+                "actor": "Table not Found ErrorHandler source",
+                "name": "tableSummaryName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "GetSummaryTables",
+                "name": "table_summary"
+            },
+            "rightPort": {
+                "actor": "Table not Found ErrorHandler Target",
+                "name": "tableSummaryName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "IfElse1",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "QuerySrc4Keys",
+                "name": "where"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "IfElse1",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "QueryTar4Keys",
+                "name": "where"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SRC Interface",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "GetKeyValuesSrc",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TAR Interface",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "GetKeyValuesTar",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Build Columns",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Append Columns",
+                "name": "input"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Append Columns",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "QuerySrc4Keys",
+                "name": "str"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Append Columns",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "QueryTar4Keys",
+                "name": "str"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "QuerySrc4Keys",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "GetKeyValuesSrc",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "QueryTar4Keys",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "GetKeyValuesTar",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "GetKeyValuesSrc",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "DeepCopy Source RS",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "GetKeyValuesTar",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "DeepCopy Target RS",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DeepCopy Source RS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Source RS Passthrough",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DeepCopy Source RS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Const1",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DeepCopy Target RS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Target",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DeepCopy Target RS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IfTarNotEmpty",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Source RS Passthrough",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Source",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "ConstStrings1",
+                "name": "strings"
+            },
+            "rightPort": {
+                "actor": "IfTarNotEmpty",
+                "name": "b"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Source",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MapDiffD2D2",
+                "name": "b"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Source",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "CreateKeysArray",
+                "name": "input"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Target",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MapDiffD2D2",
+                "name": "a"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "Const1",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MissingFields",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "Const1",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Keys",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "MapDiffD2D2",
+                "name": "map"
+            },
+            "rightPort": {
+                "actor": "CheckMatch",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MapDiffD2D2",
+                "name": "map"
+            },
+            "rightPort": {
+                "actor": "CreateFieldsArray",
+                "name": "input"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "CreateFieldsArray",
+                "name": "array"
+            },
+            "rightPort": {
+                "actor": "Array Pass Through",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "CreateKeysArray",
+                "name": "array"
+            },
+            "rightPort": {
+                "actor": "KeysArrayPassThrough",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Array Pass Through",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MissingFields",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "KeysArrayPassThrough",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Keys",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "MissingFields",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "List Fields",
+                "name": "obj"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Keys",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Get Customized Key",
+                "name": "rowMap"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "List Fields",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "Get Customized Key",
+                "name": "customizedKey"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Source Results",
+                "name": "CUSTOMIZED_KEY"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Get Customized Key",
+                "name": "customizedKey"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target Results",
+                "name": "CUSTOMIZED_KEY"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Get Customized Key",
+                "name": "customizedKey"
+            },
+            "rightPort": {
+                "actor": "D2D Validation in DB",
+                "name": "CUSTOMIZED_KEY"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Get Customized Key",
+                "name": "customizedKey"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target In DB",
+                "name": "CUSTOMIZED_KEY"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Target Secured?",
+                "name": "value"
+            },
+            "path": [
+                "value"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Target Secured?",
+                "name": "column_name"
+            },
+            "path": [
+                "key"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Source Results",
+                "name": "COLUMN_NAME"
+            },
+            "path": [
+                "key"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Source Results",
+                "name": "SOURCE_COLUMN_VALUE"
+            },
+            "path": [
+                "value"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Source Results",
+                "name": "SOURCE_COLUMN_VALUE_TRANS"
+            },
+            "path": [
+                "value"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target Results",
+                "name": "COLUMN_NAME"
+            },
+            "path": [
+                "key"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target Results",
+                "name": "TARGET_COLUMN_VALUE"
+            },
+            "path": [
+                "value"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target Results",
+                "name": "TARGET_COLUMN_VALUE_TRANS"
+            },
+            "path": [
+                "value"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation in DB",
+                "name": "COLUMN_NAME"
+            },
+            "path": [
+                "key"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation in DB",
+                "name": "SOURCE_COLUMN_VALUE_TRANS"
+            },
+            "path": [
+                "value"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation in DB",
+                "name": "SOURCE_COLUMN_VALUE"
+            },
+            "path": [
+                "value"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target In DB",
+                "name": "TARGET_COLUMN_VALUE_TRANS"
+            },
+            "path": [
+                "value"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target In DB",
+                "name": "TARGET_COLUMN_VALUE"
+            },
+            "path": [
+                "value"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target In DB",
+                "name": "COLUMN_NAME"
+            },
+            "path": [
+                "key"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Target Secured?",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Source Results",
+                "name": "TARGET_VALUE_SECURED"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Target Secured?",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target Results",
+                "name": "TARGET_VALUE_SECURED"
+            },
+            "path": [
+                "value"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Target Secured?",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target Results",
+                "name": "TARGET_VALUE_SECURED"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Target Secured?",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "D2D Validation in DB",
+                "name": "TARGET_VALUE_SECURED"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Target Secured?",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target In DB",
+                "name": "TARGET_VALUE_SECURED"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "EXEC_MODE",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "customizedKeyComparison"
+            },
+            "rightPort": {
+                "actor": "Keys Uppercase",
+                "name": "string"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "luTypeSrc"
+            },
+            "rightPort": {
+                "actor": "LU Type SRC",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "luTypeTar"
+            },
+            "rightPort": {
+                "actor": "LU Type TAR",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "excludeCondition"
+            },
+            "rightPort": {
+                "actor": "Exclude Condition",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "Search_IND"
+            },
+            "rightPort": {
+                "actor": "Test S",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "Search_IND"
+            },
+            "rightPort": {
+                "actor": "Test T",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "EXECUTION ID",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "SEPERATOR",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "RESULT_INTERFACE",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "LOAD_SCHEMA",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "Mismatch_Columns"
+            },
+            "rightPort": {
+                "actor": "Mismatch_Columns",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "SRC Interface",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "TAR Interface",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "sourceTableName"
+            },
+            "rightPort": {
+                "actor": "QuerySrc4Keys",
+                "name": "sourceTableName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "targetTableName"
+            },
+            "rightPort": {
+                "actor": "QueryTar4Keys",
+                "name": "targetTableName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "luTypeSrc"
+            },
+            "rightPort": {
+                "actor": "Table not Found ErrorHandler source",
+                "name": "luTypeSrc"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "sourceTableName"
+            },
+            "rightPort": {
+                "actor": "Table not Found ErrorHandler source",
+                "name": "sourceTableName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "IID"
+            },
+            "rightPort": {
+                "actor": "Table not Found ErrorHandler source",
+                "name": "iid"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "targetTableName"
+            },
+            "rightPort": {
+                "actor": "Table not Found ErrorHandler source",
+                "name": "targetTableName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "Table not Found ErrorHandler source",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "luTypeSrc"
+            },
+            "rightPort": {
+                "actor": "Table not Found ErrorHandler Target",
+                "name": "luTypeSrc"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "sourceTableName"
+            },
+            "rightPort": {
+                "actor": "Table not Found ErrorHandler Target",
+                "name": "sourceTableName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "IID"
+            },
+            "rightPort": {
+                "actor": "Table not Found ErrorHandler Target",
+                "name": "iid"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "targetTableName"
+            },
+            "rightPort": {
+                "actor": "Table not Found ErrorHandler Target",
+                "name": "targetTableName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "Table not Found ErrorHandler Target",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "customizedKeyComparison"
+            },
+            "rightPort": {
+                "actor": "Get Customized Key",
+                "name": "customizedKey"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "delimitter"
+            },
+            "rightPort": {
+                "actor": "Target Secured?",
+                "name": "delimitter"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "Search_IND"
+            },
+            "rightPort": {
+                "actor": "For SOURCE",
+                "name": "Search_IND"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Source Results",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Source Results",
+                "name": "table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "IID"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Source Results",
+                "name": "IID"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "sourceTableName"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Source Results",
+                "name": "SOURCE_TABLE_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "targetTableName"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Source Results",
+                "name": "TARGET_TABLE_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "match_result"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Source Results",
+                "name": "MATCH_RESULT"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "IID"
+            },
+            "rightPort": {
+                "actor": "D2D Validation in DB",
+                "name": "IID"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "sourceTableName"
+            },
+            "rightPort": {
+                "actor": "D2D Validation in DB",
+                "name": "SOURCE_TABLE_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "targetTableName"
+            },
+            "rightPort": {
+                "actor": "D2D Validation in DB",
+                "name": "TARGET_TABLE_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "match_result"
+            },
+            "rightPort": {
+                "actor": "D2D Validation in DB",
+                "name": "MATCH_RESULT"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target Results",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target Results",
+                "name": "table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "IID"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target Results",
+                "name": "IID"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "targetTableName"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target Results",
+                "name": "SOURCE_TABLE_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "sourceTableName"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target Results",
+                "name": "TARGET_TABLE_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "match_result"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target Results",
+                "name": "MATCH_RESULT"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "IID"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target In DB",
+                "name": "IID"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "targetTableName"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target In DB",
+                "name": "SOURCE_TABLE_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "sourceTableName"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target In DB",
+                "name": "TARGET_TABLE_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "match_result"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Target In DB",
+                "name": "MATCH_RESULT"
+            }
+        }
+    ]
+}

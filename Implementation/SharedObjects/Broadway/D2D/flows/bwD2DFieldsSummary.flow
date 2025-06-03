@@ -1,0 +1,1427 @@
+tags: d2dv2,d2d,D2D
+stages:
+  Preinit:
+    actors:
+      Seperator Key:
+        parent: StringFormat
+        in:
+          format:
+            const: ${lu_name}.${key}
+          lu_name:
+            external: lu_name
+            schema: string
+            mandatory: false
+          key:
+            const: D2D_CONF_SEPERATOR
+            schema: string
+            mandatory: false
+      Source Env Key:
+        parent: StringFormat
+        in:
+          format:
+            const: ${lu_name}.${key}
+          lu_name:
+            external: lu_name
+            schema: string
+            mandatory: false
+          key:
+            const: D2D_SOURCE_ENV
+            schema: string
+            mandatory: false
+      Target Env Key:
+        parent: StringFormat
+        in:
+          format:
+            const: ${lu_name}.${key}
+          lu_name:
+            external: lu_name
+            schema: string
+            mandatory: false
+          key:
+            const: D2D_TARGET_ENV
+            schema: string
+            mandatory: false
+  Init:
+    actors:
+      IID:
+        parent: Const
+        in:
+          value:
+            const: null
+            external: iid
+        out:
+          value:
+            schema: string
+      LU:
+        parent: Const
+        in:
+          value:
+            const: null
+            external: lu_name
+        out:
+          value:
+            schema: string
+      ReadSeparator:
+        parent: FabricSetRead
+        in:
+          key:
+            const: null
+            link: Seperator Key/string
+            default: false
+      ReadSourceEnv:
+        parent: FabricSetRead
+        in:
+          key:
+            const: null
+            link: Source Env Key/string
+            default: false
+      ReadTargetEnv:
+        parent: FabricSetRead
+        in:
+          key:
+            const: null
+            link: Target Env Key/string
+            default: false
+      Extract or Direct:
+        parent: Const
+        in:
+          value:
+            const: null
+            external: execution_mode
+        out:
+          value:
+            schema: string
+      RESULT_INTERFACE:
+        parent: GetLUVariable
+        in:
+          variableName:
+            const: D2D_RESULT_INTERFACE
+          luName:
+            external: lu_name
+      LOAD_SCHEMA:
+        parent: GetLUVariable
+        in:
+          variableName:
+            const: D2D_LOAD_SCHEMA
+          luName:
+            external: lu_name
+      EXECUTION ID:
+        parent: GetD2DExecutionID
+        in:
+          luName:
+            external: lu_name
+  Prepare:
+    actors:
+      OpenFabricSession4Tar:
+        parent: OpenFabricSession
+        in:
+          interface:
+            const: fabricTAR
+      SourceEnvIID:
+        parent: StringFormat
+        in:
+          format:
+            const: ${orig}_${iid}
+          iid:
+            link: IID/value
+            schema: string
+            mandatory: false
+          orig:
+            link: ReadSourceEnv/result
+            schema: string
+            mandatory: false
+      TargetEnvIID:
+        parent: StringFormat
+        in:
+          format:
+            const: ${copy}_${iid}
+          iid:
+            link: IID/value
+            schema: string
+            mandatory: false
+          copy:
+            link: ReadTargetEnv/result
+            schema: string
+            mandatory: false
+      TDM_DELETE_BEFORE_LOAD:
+        parent: StringFormat
+        disabled: true
+        in:
+          format:
+            const: ${lu_name}.TDM_DELETE_BEFORE_LOAD
+          lu_name:
+            link: LU/value
+            schema: string
+            mandatory: false
+      'OrigSession: Set Source Environment: DbCommand':
+        parent: DbCommand
+        in:
+          interface:
+            const: fabric
+          sql:
+            const: set environment=${env}
+          env:
+            link: ReadSourceEnv/result
+            schema: string
+            mandatory: false
+      'ShadowSession: Set Target Environment: DbCommand':
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: set environment=${env}
+          env:
+            link: ReadTargetEnv/result
+            schema: string
+            mandatory: false
+      GetSummaryTables:
+        parent: InnerFlow
+        in:
+          flowName:
+            const: bwGetSummaryTableNames
+          interface:
+            link: RESULT_INTERFACE/variableValue
+            schema: string
+            mandatory: false
+        out:
+          field_summary:
+            schema: string
+          record_summary:
+            schema: string
+          table_summary:
+            schema: string
+          entity_summary:
+            schema: string
+          schema:
+            schema: string
+  Execution Mode:
+    dependsOn: Prepare
+    actors:
+      Extract:
+        parent: EqualsIgnoreCase
+        condition: result
+        in:
+          b:
+            const: Extract
+            schema: string
+          a:
+            link: Extract or Direct/value
+      'OrigSession: TDM_DELETE_BEFORE_LOAD':
+        parent: FabricSet
+        in:
+          key:
+            const: TDM_DELETE_BEFORE_LOAD
+          value:
+            const: 'false'
+      'OrigSession: TDM_SYNC_SOURCE_DATA':
+        parent: FabricSet
+        in:
+          key:
+            const: TDM_SYNC_SOURCE_DATA
+          value:
+            const: 'true'
+      'OrigSession: EXTRACT_MASKING_FLAG':
+        parent: FabricSet
+        in:
+          key:
+            const: EXTRACT_MASKING_FLAG
+          value:
+            const: 'false'
+      'OrigSession: enable_masking':
+        parent: FabricSet
+        in:
+          key:
+            const: enable_masking
+          value:
+            const: 'false'
+      'ShadowSession: TDM_DELETE_BEFORE_LOAD':
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: set TDM_DELETE_BEFORE_LOAD=false
+      'ShadowSession: TDM_SYNC_SOURCE_DATA':
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: set TDM_SYNC_SOURCE_DATA=true
+      'ShadowSession: EXTRACT_MASKING_FLAG':
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: set EXTRACT_MASKING_FLAG=false
+      'ShadowSession: enable_masking':
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: set enable_masking=false
+    split: '--------------------'
+  Direct Mode:
+    else: true
+    transactional: false
+    dependsOn: Prepare
+  Extract Mode:
+    dependsOn: Execution Mode
+    split: '--------------------'
+  Direct Mode Cont.:
+    transactional: false
+    dependsOn: Direct Mode
+    actors:
+      Direct:
+        parent: EqualsIgnoreCase
+        condition: result
+        in:
+          b:
+            const: Direct
+            schema: string
+          a:
+            link: Extract or Direct/value
+      'OrigSession: TDM_DELETE_ONLY_TASK':
+        parent: FabricSet
+        in:
+          key:
+            const: TDM_DELETE_ONLY_TASK
+          value:
+            const: 'true'
+      'OrigSession: TDM_DELETE_BEFORE_LOAD TAR':
+        parent: FabricSet
+        in:
+          key:
+            const: TDM_DELETE_BEFORE_LOAD
+          value:
+            const: 'true'
+      'OrigSession: TDM_SYNC_SOURCE_DATA1':
+        parent: FabricSet
+        in:
+          key:
+            const: TDM_SYNC_SOURCE_DATA
+          value:
+            const: 'false'
+      'OrigSession: TDM_TAR_ENV_NAME':
+        parent: FabricSet
+        in:
+          key:
+            const: TDM_TAR_ENV_NAME
+          value:
+            const: 'false'
+            link: ReadSourceEnv/result
+      'ShadowSession: TDM_DELETE_ONLY_TASK':
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: set TDM_DELETE_ONLY_TASK=true
+      'ShadowSession: TDM_DELETE_BEFORE_LOAD TAR':
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: set TDM_DELETE_BEFORE_LOAD=true
+      'ShadowSession: TDM_SYNC_SOURCE_DATA1':
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: set TDM_SYNC_SOURCE_DATA=false
+      'ShadowSession: TDM_TAR_ENV_NAME':
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: set TDM_TAR_ENV_NAME=${tar_env}
+          tar_env:
+            link: ReadTargetEnv/result
+            schema: string
+            mandatory: false
+    split: '--------------------'
+  Stage 1:
+    else: true
+    transactional: false
+    dependsOn: Direct Mode
+  Check Source:
+    dependsOn: Extract Mode
+    actors:
+      NotInSource:
+        parent: ErrorHandler
+        error: result
+        in:
+          config:
+            const:
+            - exceptionKey: java.lang.Exception
+              conditions:
+                message: .*
+              actions:
+                suppress: true
+                log: false
+                flowName: ''
+                number_of_retries: ''
+                retry_interval: ''
+      GetSourceLUI:
+        parent: FabricGet
+        in:
+          luType:
+            const: null
+            link:
+              path: LU/value
+              pos: 0
+          syncMode:
+            const: FORCE
+          iid:
+            link: SourceEnvIID/string
+    split: '--------------------'
+  Stage 3:
+    transactional: false
+    dependsOn: Direct Mode Cont.
+    actors:
+      NotInSourceDirect:
+        parent: ErrorHandler
+        error: result
+        in:
+          config:
+            const:
+            - exceptionKey: java.lang.Exception
+              conditions:
+                message: .*
+              actions:
+                suppress: true
+                log: false
+                flowName: ''
+                number_of_retries: ''
+                retry_interval: ''
+      GetSourceLUI TAR Tables:
+        parent: FabricGet
+        in:
+          luType:
+            const: null
+            link:
+              path: LU/value
+              pos: 0
+          syncMode:
+            const: FORCE
+          iid:
+            link: SourceEnvIID/string
+    split: '--------------------'
+  Stage 4:
+    transactional: false
+    dependsOn: Stage 1
+    actors:
+      Reconciliation:
+        parent: Equals
+        condition: result
+        in:
+          b:
+            const: Reconciliation
+            schema: string
+          a:
+            link: Extract or Direct/value
+      IID Passthrough:
+        parent: Const
+        in:
+          value:
+            const: null
+            link: IID/value
+        out:
+          value:
+            schema: string
+      IID Prefixed:
+        parent: JavaScript
+        in:
+          script:
+            const: '''D2D_''+iid'
+          iid:
+            link: IID/value
+            schema: string
+            mandatory: false
+        out:
+          result:
+            schema: string
+      LU Name2:
+        parent: Const
+        in:
+          value:
+            const: null
+            link: LU/value
+        out:
+          value:
+            schema: string
+  Check Target:
+    transactional: false
+    dependsOn: Check Source
+    actors:
+      Source OK:
+        parent: Not
+        condition: result
+        in:
+          value:
+            link: NotInSource/result
+      NotInTarget:
+        parent: ErrorHandler
+        error: result
+        in:
+          config:
+            const:
+            - exceptionKey: java.lang.Exception
+              conditions:
+                message: .*
+              actions:
+                suppress: true
+                log: false
+                flowName: ''
+                number_of_retries: ''
+                retry_interval: ''
+      'ShadowSession: Sync Force':
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: set sync=force
+      GetTargetLUI:
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: get ${luname}.${iid}
+          luname:
+            link: LU/value
+            schema: string
+            mandatory: false
+          iid:
+            link: TargetEnvIID/string
+            schema: string
+            mandatory: false
+        out:
+          result:
+            schema: '#ref'
+    split: '--------------------'
+  Not In Source:
+    else: true
+    transactional: false
+    dependsOn: Check Source
+    actors:
+      D2D Source Failed To DB:
+        parent: DbLoad
+        in:
+          interface:
+            const: null
+            link: RESULT_INTERFACE/variableValue
+          schema:
+            const: null
+            link: LOAD_SCHEMA/variableValue
+          table:
+            const: null
+            link: GetSummaryTables/field_summary
+          fields:
+            const:
+            - EXECUTION_ID
+            - IID
+            - SOURCE_TABLE_NAME
+            - TARGET_TABLE_NAME
+            - CUSTOMIZED_KEY
+            - COLUMN_NAME
+            - MATCH_RESULT
+            - TARGET_VALUE_SECURED
+            - SOURCE_COLUMN_VALUE
+            - TARGET_COLUMN_VALUE
+            - SOURCE_COLUMN_VALUE_TRANS
+            - TARGET_COLUMN_VALUE_TRANS
+          keys:
+            const:
+            - EXECUTION_ID
+            - IID
+            - SOURCE_TABLE_NAME
+            - TARGET_TABLE_NAME
+            - CUSTOMIZED_KEY
+            - COLUMN_NAME
+          EXECUTION_ID:
+            link: EXECUTION ID/result
+            schema: string
+          IID:
+            link: IID/value
+            schema: string
+          SOURCE_TABLE_NAME:
+            const: NA
+            schema: string
+          TARGET_TABLE_NAME:
+            const: NA
+            schema: string
+          CUSTOMIZED_KEY:
+            const: NA
+            schema: string
+          COLUMN_NAME:
+            const: NA
+            schema: string
+          MATCH_RESULT:
+            const: Instance Not Found In Source
+            schema: string
+          SOURCE_COLUMN_VALUE:
+            const: NA
+            schema: string
+          TARGET_COLUMN_VALUE:
+            const: NA
+            schema: string
+          SOURCE_COLUMN_VALUE_TRANS:
+            const: NA
+            schema: string
+          TARGET_COLUMN_VALUE_TRANS:
+            const: NA
+            schema: string
+          TARGET_VALUE_SECURED:
+            const: NA
+            schema: string
+            mandatory: false
+    split: '--------------------'
+  Stage 6:
+    transactional: false
+    dependsOn: Stage 3
+    actors:
+      Source OK Direct:
+        parent: Not
+        condition: result
+        in:
+          value:
+            link: NotInSourceDirect/result
+      NotInTargetDirect:
+        parent: ErrorHandler
+        error: result
+        in:
+          config:
+            const:
+            - exceptionKey: java.lang.Exception
+              conditions:
+                message: .*
+              actions:
+                suppress: true
+                log: false
+                flowName: ''
+                number_of_retries: ''
+                retry_interval: ''
+      'ShadowSession: Sync Force1':
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: set sync=force
+      GetTargetLUI TAR Tables:
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: get ${luname}.${iid}
+          luname:
+            link: LU/value
+            schema: string
+            mandatory: false
+          iid:
+            link: TargetEnvIID/string
+            schema: string
+            mandatory: false
+        out:
+          result:
+            schema: '#ref'
+    split: '--------------------'
+  Stage 13:
+    else: true
+    transactional: false
+    dependsOn: Stage 3
+    actors:
+      D2D Source Failed To DB TAR:
+        parent: DbLoad
+        in:
+          interface:
+            const: null
+            link: RESULT_INTERFACE/variableValue
+          schema:
+            const: null
+            link: LOAD_SCHEMA/variableValue
+          table:
+            const: null
+            link: GetSummaryTables/field_summary
+          fields:
+            const:
+            - EXECUTION_ID
+            - IID
+            - SOURCE_TABLE_NAME
+            - TARGET_TABLE_NAME
+            - CUSTOMIZED_KEY
+            - COLUMN_NAME
+            - MATCH_RESULT
+            - TARGET_VALUE_SECURED
+            - SOURCE_COLUMN_VALUE
+            - TARGET_COLUMN_VALUE
+            - SOURCE_COLUMN_VALUE_TRANS
+            - TARGET_COLUMN_VALUE_TRANS
+          keys:
+            const:
+            - EXECUTION_ID
+            - IID
+            - SOURCE_TABLE_NAME
+            - TARGET_TABLE_NAME
+            - CUSTOMIZED_KEY
+            - COLUMN_NAME
+          EXECUTION_ID:
+            link: EXECUTION ID/result
+            schema: string
+          IID:
+            link: IID/value
+            schema: string
+          SOURCE_TABLE_NAME:
+            const: NA
+            schema: string
+          TARGET_TABLE_NAME:
+            const: NA
+            schema: string
+          CUSTOMIZED_KEY:
+            const: NA
+            schema: string
+          COLUMN_NAME:
+            const: NA
+            schema: string
+          MATCH_RESULT:
+            const: Instance Not Found In Source
+            schema: string
+          SOURCE_COLUMN_VALUE:
+            const: NA
+            schema: string
+          TARGET_COLUMN_VALUE:
+            const: NA
+            schema: string
+          SOURCE_COLUMN_VALUE_TRANS:
+            const: NA
+            schema: string
+          TARGET_COLUMN_VALUE_TRANS:
+            const: NA
+            schema: string
+          TARGET_VALUE_SECURED:
+            const: NA
+            schema: string
+            mandatory: false
+    split: '--------------------'
+  Stage 7:
+    transactional: false
+    dependsOn: Stage 4
+    actors:
+      GetSourceLUI2:
+        parent: FabricGet
+        in:
+          luType:
+            const: null
+            link: LU Name2/value
+          iid:
+            const: null
+            link:
+              path: IID Passthrough/value
+              pos: 0
+            default: false
+          syncMode:
+            const: 'OFF'
+      Get D2D LU:
+        parent: FabricGet
+        in:
+          luType:
+            const: D2D
+          iid:
+            const: null
+            link:
+              path: IID Passthrough/value
+              pos: 0
+            default: false
+          syncMode:
+            const: 'ON'
+      'ShadowSession: Sync Force2':
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: set sync=force
+      GetTargetLUI2:
+        parent: DbCommand
+        in:
+          interface:
+            const: fabricTAR
+          sql:
+            const: get ${luname}.${iid}
+          luname:
+            link: LU Name2/value
+            schema: string
+            mandatory: false
+          iid:
+            link: IID Prefixed/result
+            schema: string
+            mandatory: false
+        out:
+          result:
+            schema: '#ref'
+  Stage 2:
+    transactional: false
+    dependsOn: Check Target
+    actors:
+      Target OK:
+        parent: Not
+        condition: result
+        in:
+          value:
+            link: NotInTarget/result
+    split: '--------------------'
+  Not In Target:
+    else: true
+    transactional: false
+    dependsOn: Check Target
+    actors:
+      D2D Target Failed To DB:
+        parent: DbLoad
+        in:
+          interface:
+            const: null
+            link: RESULT_INTERFACE/variableValue
+          schema:
+            const: null
+            link: LOAD_SCHEMA/variableValue
+          table:
+            const: null
+            link: GetSummaryTables/field_summary
+          fields:
+            const:
+            - EXECUTION_ID
+            - IID
+            - SOURCE_TABLE_NAME
+            - TARGET_TABLE_NAME
+            - CUSTOMIZED_KEY
+            - COLUMN_NAME
+            - MATCH_RESULT
+            - TARGET_VALUE_SECURED
+            - SOURCE_COLUMN_VALUE
+            - TARGET_COLUMN_VALUE
+            - SOURCE_COLUMN_VALUE_TRANS
+            - TARGET_COLUMN_VALUE_TRANS
+          keys:
+            const:
+            - EXECUTION_ID
+            - IID
+            - SOURCE_TABLE_NAME
+            - TARGET_TABLE_NAME
+            - CUSTOMIZED_KEY
+            - COLUMN_NAME
+          dialect:
+            const: sqlite
+          EXECUTION_ID:
+            link: EXECUTION ID/result
+            schema: string
+          IID:
+            link: IID/value
+            schema: string
+          SOURCE_TABLE_NAME:
+            const: NA
+            schema: string
+          TARGET_TABLE_NAME:
+            const: NA
+            schema: string
+          CUSTOMIZED_KEY:
+            const: NA
+            schema: string
+          COLUMN_NAME:
+            const: NA
+            schema: string
+          MATCH_RESULT:
+            const: Instance Not Found In Source
+            schema: string
+          SOURCE_COLUMN_VALUE:
+            const: NA
+            schema: string
+          TARGET_COLUMN_VALUE:
+            const: NA
+            schema: string
+          SOURCE_COLUMN_VALUE_TRANS:
+            const: NA
+            schema: string
+          TARGET_COLUMN_VALUE_TRANS:
+            const: NA
+            schema: string
+          TARGET_VALUE_SECURED:
+            const: NA
+            schema: string
+            mandatory: false
+    split: '--------------------'
+  Stage 10:
+    dependsOn: Not In Source
+    split: '--------------------'
+  Stage 5:
+    transactional: false
+    dependsOn: Stage 6
+    actors:
+      Target OK Direct:
+        parent: Not
+        condition: result
+        in:
+          value:
+            link: NotInTargetDirect/result
+    split: '--------------------'
+  Stage 16:
+    else: true
+    transactional: false
+    dependsOn: Stage 6
+    actors:
+      D2D Target Failed To DB1:
+        parent: DbLoad
+        in:
+          interface:
+            const: null
+            link: RESULT_INTERFACE/variableValue
+          schema:
+            const: null
+            link: LOAD_SCHEMA/variableValue
+          table:
+            const: null
+            link: GetSummaryTables/field_summary
+          fields:
+            const:
+            - EXECUTION_ID
+            - IID
+            - SOURCE_TABLE_NAME
+            - TARGET_TABLE_NAME
+            - CUSTOMIZED_KEY
+            - COLUMN_NAME
+            - MATCH_RESULT
+            - TARGET_VALUE_SECURED
+            - SOURCE_COLUMN_VALUE
+            - TARGET_COLUMN_VALUE
+            - SOURCE_COLUMN_VALUE_TRANS
+            - TARGET_COLUMN_VALUE_TRANS
+          keys:
+            const:
+            - EXECUTION_ID
+            - IID
+            - SOURCE_TABLE_NAME
+            - TARGET_TABLE_NAME
+            - CUSTOMIZED_KEY
+            - COLUMN_NAME
+          dialect:
+            const: sqlite
+          EXECUTION_ID:
+            link: EXECUTION ID/result
+            schema: string
+          IID:
+            link: IID/value
+            schema: string
+          SOURCE_TABLE_NAME:
+            const: NA
+            schema: string
+          TARGET_TABLE_NAME:
+            const: NA
+            schema: string
+          CUSTOMIZED_KEY:
+            const: NA
+            schema: string
+          COLUMN_NAME:
+            const: NA
+            schema: string
+          MATCH_RESULT:
+            const: Instance Not Found In Source
+            schema: string
+          SOURCE_COLUMN_VALUE:
+            const: NA
+            schema: string
+          TARGET_COLUMN_VALUE:
+            const: NA
+            schema: string
+          SOURCE_COLUMN_VALUE_TRANS:
+            const: NA
+            schema: string
+          TARGET_COLUMN_VALUE_TRANS:
+            const: NA
+            schema: string
+          TARGET_VALUE_SECURED:
+            const: NA
+            schema: string
+            mandatory: false
+    split: '--------------------'
+  Stage 14:
+    dependsOn: Stage 13
+    split: '--------------------'
+  Stage 8:
+    transactional: false
+    dependsOn: Stage 7
+  Stage 15:
+    actors:
+      Found In Source and Target:
+        parent: And
+        condition: result
+        in:
+          a:
+            link:
+            - Source OK/result
+            - Source OK Direct/result
+          b:
+            link:
+            - Target OK/result
+            - Target OK Direct/result
+      D2DConfiguration:
+        parent: MTableLookup
+        in:
+          mtable:
+            const: D2DConfig
+          Lu_Name:
+            link: LU/value
+            schema: string
+            editor:
+              id: com.k2view.mTableKey
+            mandatory: false
+        out:
+          result:
+            schema: '#ref'
+  Target Session:
+    actors:
+      Configuration Passthrough:
+        parent: Const
+        in:
+          value:
+            const: null
+            link: D2DConfiguration/result
+        out:
+          value:
+            schema: '#ref'
+      check config:
+        parent: JavaScript
+        in:
+          script:
+            const:
+              userCode: "if (input1 == null || input1.length===0){\r\n    throw new\
+                \ Error(\"There is no configuration for this LU\")\r\n}"
+              script: |-
+                if (input1 == null || input1.length === 0) {
+                  throw new Error("There is no configuration for this LU");
+                }
+          input1:
+            link: D2DConfiguration/result
+            schema: '#ref'
+            mandatory: false
+  Pass Through:
+    actors:
+      Row Info:
+        parent: Const
+        in:
+          value:
+            const: null
+            link:
+              path: Configuration Passthrough/value
+              iterate: Iterate
+        out:
+          value:
+            schema: '#ref'
+  Population For Active Tables:
+    actors:
+      Check Active:
+        parent: ToBool
+        condition: bool
+        in:
+          value:
+            link: Row Info/value/Active
+      Get Population Name:
+        parent: LuFunction
+        in:
+          functionName:
+            const: fnGetTablePopulationDetails
+          luName:
+            link: Row Info/value/Lu_Name
+            schema: string
+            mandatory: false
+          tableName:
+            link: Row Info/value/Source_Table_Name
+            schema: string
+            mandatory: false
+        out:
+          tablePopDetails:
+            schema: '#ref'
+  Prepare Flow Name:
+    actors:
+      Construct Flow Name:
+        parent: StringFormat
+        in:
+          format:
+            const: ${table_name}.${population}
+          table_name:
+            link:
+              path: Get Population Name/tablePopDetails/luTable
+              iterate: First
+            schema: string
+            mandatory: false
+          population:
+            link:
+              path: Get Population Name/tablePopDetails/popName
+              iterate: First
+            schema: '#ref'
+            mandatory: false
+  Get Interface Name:
+    actors:
+      Get Interface:
+        parent: PopulationUtil
+        in:
+          flowName:
+            link: Construct Flow Name/string
+        out:
+          result:
+            schema: string
+      Count1:
+        parent: Count
+        out:
+          value:
+            schema: integer
+  Execute Inner Flow:
+    actors:
+      D2DSourceInTarget:
+        parent: InnerFlow
+        in:
+          flowName:
+            const: bwD2Dv2SourceInTarget
+          innerFlowClose:
+            const: false
+          luType:
+            link: LU/value
+            schema: string
+          sourceTableName:
+            link: Row Info/value/Source_Table_Name
+            schema: string
+          source_Transformation_Function_Name:
+            link: Row Info/value/Source_Transformation_Function_Name
+            schema: string
+          targetTableName:
+            link: Row Info/value/Target_Table_Name
+            schema: string
+          target_Transformation_Function_Name:
+            link: Row Info/value/Target_Transformation_Function_Name
+            schema: string
+          customizedKeyComparison:
+            link: Row Info/value/Customized_Key_Comparison
+            schema: string
+          excludedColumnsNames:
+            link: Row Info/value/Excluded_Columns_Names
+            schema: string
+          IID:
+            link: IID/value
+            schema: string
+          source_columns_to_Ignore_null:
+            link: Row Info/value/source_columns_to_Ignore_null
+            schema: string
+          target_columns_to_Ignore_null:
+            link: Row Info/value/target_columns_to_Ignore_null
+            schema: string
+          Mismatch_Columns:
+            link: Row Info/value/Mismatch_Columns
+            schema: string
+            mandatory: false
+          delimitter:
+            link: ReadSeparator/result
+            schema: string
+            mandatory: false
+          execution_mode:
+            link: Extract or Direct/value
+            schema: string
+            mandatory: false
+          interface:
+            link: Get Interface/result
+            schema: string
+            mandatory: false
+          compareMode:
+            link: Row Info/value/Mode
+            schema: string
+            mandatory: false
+          ColumnMapping:
+            link: Row Info/value/Column_Mapping
+            schema: string
+            mandatory: false
+      Source Key Not Found In Target:
+        parent: InnerFlow
+        in:
+          flowName:
+            const: bwD2Dv2KeyNotFound
+          sourceTableName:
+            link: Row Info/value/Source_Table_Name
+            schema: string
+          targetTableName:
+            link: Row Info/value/Target_Table_Name
+            schema: string
+          customizedKeyComparison:
+            link: Row Info/value/Customized_Key_Comparison
+            schema: string
+          luType:
+            link: LU/value
+            schema: string
+          match_result:
+            const: Source Key Not Found In Target
+            schema: string
+          IID:
+            link: IID/value
+            schema: string
+          Search_IND:
+            const: S
+            schema: string
+          Mismatch_Columns:
+            link: Row Info/value/Mismatch_Columns
+            schema: string
+            mandatory: false
+          delimitter:
+            link: ReadSeparator/result
+            schema: string
+            mandatory: false
+          source_Transformation_Function_Name:
+            schema: any
+            mandatory: false
+          excludedColumnsNames:
+            schema: any
+            mandatory: false
+          target_Transformation_Function_Name:
+            schema: any
+            mandatory: false
+          execution_mode:
+            link: Extract or Direct/value
+            schema: string
+            mandatory: false
+      Target Key Not Found In Source:
+        parent: InnerFlow
+        in:
+          flowName:
+            const: bwD2Dv2KeyNotFound
+          sourceTableName:
+            link: Row Info/value/Source_Table_Name
+            schema: string
+          targetTableName:
+            link: Row Info/value/Target_Table_Name
+            schema: string
+          customizedKeyComparison:
+            link: Row Info/value/Customized_Key_Comparison
+            schema: string
+          luType:
+            link: LU/value
+            schema: string
+          match_result:
+            const: Target Key Not Found In Source
+            schema: string
+          IID:
+            link: IID/value
+            schema: string
+          Search_IND:
+            const: T
+            schema: string
+          Mismatch_Columns:
+            link: Row Info/value/Mismatch_Columns
+            schema: string
+            mandatory: false
+          delimitter:
+            link: ReadSeparator/result
+            schema: string
+            mandatory: false
+          source_Transformation_Function_Name:
+            schema: any
+            mandatory: false
+          excludedColumnsNames:
+            schema: any
+            mandatory: false
+          target_Transformation_Function_Name:
+            schema: any
+            mandatory: false
+          execution_mode:
+            link: Extract or Direct/value
+            schema: string
+            mandatory: false
+schemas:
+  GetTargetLUI.out.result:
+    type: array
+    items:
+      type: object
+      properties:
+        luName:
+          type: string
+        iid:
+          type: string
+        version:
+          type: integer
+        action:
+          type: string
+        notes:
+          type: string
+  GetTargetLUI TAR Tables.out.result:
+    type: array
+    items:
+      type: object
+      properties:
+        luName:
+          type: string
+        iid:
+          type: string
+        version:
+          type: integer
+        action:
+          type: string
+        notes:
+          type: string
+  GetTargetLUI2.out.result:
+    type: array
+    items:
+      type: object
+      properties:
+        luName:
+          type: string
+        iid:
+          type: string
+        version:
+          type: integer
+        action:
+          type: string
+        notes:
+          type: string
+  D2DConfiguration.out.result:
+    type: array
+    items:
+      type: object
+      properties:
+        Lu_Name:
+          type: string
+        Source_Table_Name:
+          type: string
+        Column_Mapping: {
+          }
+        Source_Transformation_Function_Name: {
+          }
+        source_columns_to_Ignore_null: {
+          }
+        Target_Table_Name:
+          type: string
+        Target_Transformation_Function_Name: {
+          }
+        target_columns_to_Ignore_null: {
+          }
+        Customized_Key_Comparison:
+          type: string
+        Mismatch_Columns: {
+          }
+        Excluded_Columns_Names: {
+          }
+        Active:
+          type: string
+        Mode: {
+          }
+        Excluded_Rows_Sql: {
+          }
+  Configuration Passthrough.out.value:
+    type: array
+    items:
+      type: object
+      properties:
+        Lu_Name:
+          type: string
+        Source_Table_Name:
+          type: string
+        Source_Transformation_Function_Name: {
+          }
+        source_columns_to_Ignore_null: {
+          }
+        Target_Table_Name:
+          type: string
+        Target_Transformation_Function_Name: {
+          }
+        target_columns_to_Ignore_null: {
+          }
+        Customized_Key_Comparison:
+          type: string
+        Mismatch_Columns: {
+          }
+        Excluded_Columns_Names: {
+          }
+        Active:
+          type: string
+        Mode:
+          type: string
+  check config.in.input1:
+    type: array
+    items:
+      type: object
+      properties:
+        Lu_Name:
+          type: string
+        Source_Table_Name:
+          type: string
+        Source_Transformation_Function_Name: {
+          }
+        source_columns_to_Ignore_null: {
+          }
+        Target_Table_Name:
+          type: string
+        Target_Transformation_Function_Name: {
+          }
+        target_columns_to_Ignore_null: {
+          }
+        Customized_Key_Comparison:
+          type: string
+        Mismatch_Columns: {
+          }
+        Excluded_Columns_Names: {
+          }
+        Active:
+          type: string
+        Mode:
+          type: string
+  Row Info.out.value:
+    type: object
+    properties:
+      Lu_Name:
+        type: string
+      Source_Table_Name:
+        type: string
+      Column_Mapping: {
+        }
+      Source_Transformation_Function_Name: {
+        }
+      source_columns_to_Ignore_null: {
+        }
+      Target_Table_Name:
+        type: string
+      Target_Transformation_Function_Name: {
+        }
+      target_columns_to_Ignore_null: {
+        }
+      Customized_Key_Comparison:
+        type: string
+      Mismatch_Columns: {
+        }
+      Excluded_Columns_Names: {
+        }
+      Active:
+        type: string
+      Mode: {
+        }
+      Excluded_Rows_Sql: {
+        }
+  Get Population Name.out.tablePopDetails:
+    type: array
+    items:
+      type: object
+      properties:
+        luTable:
+          type: string
+        popOrder:
+          type: string
+        popName:
+          type: string
+  Construct Flow Name.in.population:
+    type: object
+    properties:
+      popOrder:
+        type: string
+      popName:
+        type: string

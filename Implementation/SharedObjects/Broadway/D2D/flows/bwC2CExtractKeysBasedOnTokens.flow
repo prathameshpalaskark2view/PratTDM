@@ -1,0 +1,1824 @@
+{
+    "tags": [
+        "D2D"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Keys table details",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "KEYS_TABLE_INTERFACE",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [
+                                    {
+                                        "name": "variableName",
+                                        "const": "D2D_C2C_KEYS_TABLE_INTERFACE"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "KEYS_TABLE_SCHEMA",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [
+                                    {
+                                        "name": "variableName",
+                                        "const": "D2D_C2C_KEYS_TABLE_SCHEMA"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "KEYS_TABLE_NAME",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [
+                                    {
+                                        "name": "variableName",
+                                        "const": "D2D_C2C_KEYS_TABLE_NAME"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "KEYS_TABLE_GROUPS",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [
+                                    {
+                                        "name": "variableName",
+                                        "const": "D2D_C2C_GROUPS_COUNT"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SEPERATOR",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [
+                                    {
+                                        "name": "variableName",
+                                        "const": "D2D_CONF_SEPERATOR"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 12",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ErrorHandler2",
+                            "onError": "result",
+                            "actorType": {
+                                "parentType": "ErrorHandler",
+                                "inputs": [
+                                    {
+                                        "name": "config",
+                                        "const": [
+                                            {
+                                                "exceptionKey": "java.lang.Exception",
+                                                "conditions": {
+                                                    "message": "already exists"
+                                                },
+                                                "actions": {
+                                                    "suppress": true,
+                                                    "log": false,
+                                                    "flowName": ""
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "DbCreateTable1",
+                            "actorType": {
+                                "parentType": "DbCreateTable",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            {
+                                                "name": "group_id",
+                                                "type": "text",
+                                                "pk": true,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "org_key",
+                                                "type": "text",
+                                                "pk": true,
+                                                "mandatory": false
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Cassandra details",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "SRC Cass Interface",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [
+                                    {
+                                        "name": "variableName",
+                                        "const": "D2D_C2C_INTERFACE_SRC"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "TAR Cass Interface",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [
+                                    {
+                                        "name": "variableName",
+                                        "const": "D2D_C2C_INTERFACE_TAR"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SRC Cass KP",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [
+                                    {
+                                        "name": "variableName",
+                                        "const": "D2D_C2C_KP_SRC"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "TAR Cass KP",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [
+                                    {
+                                        "name": "variableName",
+                                        "const": "D2D_C2C_KP_TAR"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Token step size",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Token Step Size",
+                            "actorType": {
+                                "parentType": "GetLUVariable",
+                                "inputs": [
+                                    {
+                                        "name": "variableName",
+                                        "const": "D2D_C2C_TOKENS_STEP_SIZE"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Split1",
+                            "actorType": {
+                                "parentType": "Split",
+                                "inputs": [
+                                    {
+                                        "name": "delimiter",
+                                        "const": "^"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "JavaScript2",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "arr[0];"
+                                    },
+                                    {
+                                        "name": "arr",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "JavaScript3",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "arr[1];"
+                                    },
+                                    {
+                                        "name": "arr",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 17",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "bwD2DConfig",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwD2DConfig"
+                                    },
+                                    {
+                                        "name": "SourceInterface",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "TargetInterface",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "Cassandra",
+                                        "name": "Lu_Name",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "Lu_Name": {
+                                                        "type": "string"
+                                                    },
+                                                    "Source_Table_Name": {
+                                                        "type": "string"
+                                                    },
+                                                    "Source_Transformation_Function_Name": {},
+                                                    "source_columns_to_Ignore_null": {},
+                                                    "Target_Table_Name": {
+                                                        "type": "string"
+                                                    },
+                                                    "Target_Transformation_Function_Name": {},
+                                                    "target_columns_to_Ignore_null": {},
+                                                    "Customized_Key_Comparison": {
+                                                        "type": "string"
+                                                    },
+                                                    "Mismatch_Columns": {},
+                                                    "Excluded_Columns_Names": {},
+                                                    "Active": {
+                                                        "type": "string"
+                                                    },
+                                                    "Mode": {},
+                                                    "Excluded_Rows_Sql": {}
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 19",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ReplaceDelimeter",
+                            "actorType": {
+                                "parentType": "Replace",
+                                "inputs": [
+                                    {
+                                        "name": "search",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "replace",
+                                        "const": ","
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 13",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "TokenQueryFormat",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "SELECT min(TOKEN(${key})), max(TOKEN(${key})) FROM  ${srcCassKP}.${srcCassTbl}"
+                                    },
+                                    {
+                                        "name": "srcCassKP",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "srcCassTbl",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "key",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 8",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "TokenQueryExec",
+                            "actorType": {
+                                "parentType": "DbFetchFirstRow",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "system.min(system.token(cust_id))": {
+                                                    "type": "integer"
+                                                },
+                                                "system.max(system.token(cust_id))": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 2",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JavaScript5",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "value.values();"
+                                    },
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "system.min(system.token(cust_id, ssn))": {
+                                                    "type": "integer"
+                                                },
+                                                "system.max(system.token(cust_id, ssn))": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "MathPower1",
+                            "actorType": {
+                                "parentType": "MathPower",
+                                "inputs": [
+                                    {
+                                        "name": "a",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 16",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "DeepCopy1",
+                            "actorType": {
+                                "parentType": "DeepCopy",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 15",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JavaScript6",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "tokens[0];"
+                                    },
+                                    {
+                                        "name": "tokens",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "JavaScript7",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "tokens[1];"
+                                    },
+                                    {
+                                        "name": "tokens",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 3",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ForLoop1",
+                            "actorType": {
+                                "parentType": "ForLoop",
+                                "inputs": [
+                                    {
+                                        "name": "step",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 7",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Const1",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 5",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "MathAdd1",
+                            "actorType": {
+                                "parentType": "MathAdd",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 14",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "SrcQueryFormat",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "SELECT ${key} FROM ${srcCassKP}.${srcCassTbl} WHERE TOKEN(${key}) >= ${currToken} AND TOKEN(${key}) < ${nextToken} allow filtering"
+                                    },
+                                    {
+                                        "name": "key",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "srcCassKP",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "srcCassTbl",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "currToken",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "nextToken",
+                                        "schema": {
+                                            "type": "number"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "TarQueryFormat",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "SELECT ${key} FROM ${tarCassKP}.${tarCassTbl} WHERE TOKEN(${key}) >= ${currToken} AND TOKEN(${key}) < ${nextToken} allow filtering"
+                                    },
+                                    {
+                                        "name": "key",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "currToken",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "nextToken",
+                                        "schema": {
+                                            "type": "number"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "tarCassKP",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "tarCassTbl",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "SrcQueryExec",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "cust_id": {},
+                                                    "ssn": {}
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "TarQueryExec",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "cust_id": {},
+                                                    "ssn": {}
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 6",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ArrayConcat1",
+                            "actorType": {
+                                "parentType": "ArrayConcat",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "array",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "cust_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "ssn": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 11",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JavaScript1",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "value.get(0);"
+                                    },
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "cust_id": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "JavaScript4",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "value.values();"
+                                    },
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "cust_id": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 9",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "MathDivMod1",
+                            "actorType": {
+                                "parentType": "MathDivMod",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Concat1",
+                            "actorType": {
+                                "parentType": "Concat",
+                                "inputs": [
+                                    {
+                                        "name": "delimiter",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 10",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "ErrorHandler1",
+                            "onError": "result",
+                            "actorType": {
+                                "parentType": "ErrorHandler",
+                                "inputs": [
+                                    {
+                                        "name": "config",
+                                        "const": [
+                                            {
+                                                "exceptionKey": "com.k2view.fabric.common.io.basic.exception.StandardSqlException",
+                                                "conditions": {
+                                                    "standardType": "UNIQUE_CONSTRAINT"
+                                                },
+                                                "actions": {
+                                                    "suppress": true,
+                                                    "log": false,
+                                                    "flowName": ""
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "DbLoad1",
+                            "actorType": {
+                                "parentType": "DbLoad",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            "group_id",
+                                            "org_key"
+                                        ]
+                                    },
+                                    {
+                                        "name": "keys",
+                                        "const": [
+                                            "org_key"
+                                        ]
+                                    },
+                                    {
+                                        "name": "group_id",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "org_key",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 4",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "KEYS_TABLE_INTERFACE",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "DbCreateTable1",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "KEYS_TABLE_INTERFACE",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "DbLoad1",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "KEYS_TABLE_SCHEMA",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "DbCreateTable1",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "KEYS_TABLE_SCHEMA",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "DbLoad1",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "KEYS_TABLE_NAME",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "DbCreateTable1",
+                "name": "table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "KEYS_TABLE_NAME",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "DbLoad1",
+                "name": "table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "KEYS_TABLE_GROUPS",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "MathDivMod1",
+                "name": "b"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SEPERATOR",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "ReplaceDelimeter",
+                "name": "search"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SEPERATOR",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "Concat1",
+                "name": "delimiter"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SRC Cass Interface",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "bwD2DConfig",
+                "name": "SourceInterface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SRC Cass Interface",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "TokenQueryExec",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SRC Cass Interface",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "SrcQueryExec",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TAR Cass Interface",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "bwD2DConfig",
+                "name": "TargetInterface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TAR Cass Interface",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "TarQueryExec",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SRC Cass KP",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "TokenQueryFormat",
+                "name": "srcCassKP"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SRC Cass KP",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "SrcQueryFormat",
+                "name": "srcCassKP"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TAR Cass KP",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "TarQueryFormat",
+                "name": "tarCassKP"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Token Step Size",
+                "name": "variableValue"
+            },
+            "rightPort": {
+                "actor": "Split1",
+                "name": "string"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Split1",
+                "name": "strings"
+            },
+            "rightPort": {
+                "actor": "JavaScript2",
+                "name": "arr"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Split1",
+                "name": "strings"
+            },
+            "rightPort": {
+                "actor": "JavaScript3",
+                "name": "arr"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JavaScript2",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "MathPower1",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JavaScript3",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "MathPower1",
+                "name": "b"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "bwD2DConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "TokenQueryFormat",
+                "name": "srcCassTbl"
+            },
+            "iterate": "First",
+            "path": [
+                "Source_Table_Name"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "bwD2DConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "ReplaceDelimeter",
+                "name": "string"
+            },
+            "iterate": "First",
+            "path": [
+                "Customized_Key_Comparison"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "bwD2DConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "SrcQueryFormat",
+                "name": "srcCassTbl"
+            },
+            "iterate": "First",
+            "path": [
+                "Source_Table_Name"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "bwD2DConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "TarQueryFormat",
+                "name": "tarCassTbl"
+            },
+            "iterate": "First",
+            "path": [
+                "Target_Table_Name"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "ReplaceDelimeter",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "SrcQueryFormat",
+                "name": "key"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReplaceDelimeter",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "TarQueryFormat",
+                "name": "key"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReplaceDelimeter",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "TokenQueryFormat",
+                "name": "key"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TokenQueryFormat",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "TokenQueryExec",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TokenQueryExec",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "JavaScript5",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JavaScript5",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "DeepCopy1",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MathPower1",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "ForLoop1",
+                "name": "step"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MathPower1",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "MathAdd1",
+                "name": "b"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DeepCopy1",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JavaScript6",
+                "name": "tokens"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DeepCopy1",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JavaScript7",
+                "name": "tokens"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JavaScript6",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "ForLoop1",
+                "name": "from"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JavaScript7",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "ForLoop1",
+                "name": "to"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ForLoop1",
+                "name": "i"
+            },
+            "rightPort": {
+                "actor": "Const1",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "Const1",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MathAdd1",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Const1",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "SrcQueryFormat",
+                "name": "currToken"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Const1",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "TarQueryFormat",
+                "name": "currToken"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MathAdd1",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "SrcQueryFormat",
+                "name": "nextToken"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MathAdd1",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "TarQueryFormat",
+                "name": "nextToken"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SrcQueryFormat",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "SrcQueryExec",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TarQueryFormat",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "TarQueryExec",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SrcQueryExec",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "ArrayConcat1",
+                "name": "input"
+            },
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "TarQueryExec",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "ArrayConcat1",
+                "name": "input"
+            },
+            "arrayPosition": 1
+        },
+        {
+            "leftPort": {
+                "actor": "ArrayConcat1",
+                "name": "array"
+            },
+            "rightPort": {
+                "actor": "JavaScript1",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "ArrayConcat1",
+                "name": "array"
+            },
+            "rightPort": {
+                "actor": "JavaScript4",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "JavaScript1",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "MathDivMod1",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JavaScript4",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Concat1",
+                "name": "elements"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MathDivMod1",
+                "name": "mod"
+            },
+            "rightPort": {
+                "actor": "DbLoad1",
+                "name": "group_id"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Concat1",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "DbLoad1",
+                "name": "org_key"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "KEYS_TABLE_INTERFACE",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "KEYS_TABLE_SCHEMA",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "KEYS_TABLE_NAME",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "KEYS_TABLE_GROUPS",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "SEPERATOR",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "SRC Cass Interface",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "TAR Cass Interface",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "SRC Cass KP",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "TAR Cass KP",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "Token Step Size",
+                "name": "luName"
+            }
+        }
+    ]
+}

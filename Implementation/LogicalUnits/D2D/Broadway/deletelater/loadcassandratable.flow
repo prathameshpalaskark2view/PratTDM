@@ -1,0 +1,111 @@
+tags: deletelater
+stages:
+  Stage 1:
+    actors:
+      ForLoop1:
+        parent: ForLoop
+        in:
+          from:
+            const: 1
+          to:
+            const: 10
+      Const1:
+        parent: Const
+        in:
+          value:
+            const: 123 Lauder Ln
+            schema: string
+        out:
+          value:
+            schema: string
+      FirstNames1:
+        parent: FirstNames
+      LastNames1:
+        parent: LastNames
+  Stage 4:
+    actors:
+      RandomFromCollection1:
+        parent: RandomFromCollection
+        in:
+          collection:
+            link: FirstNames1/strings
+      RandomFromCollection2:
+        parent: RandomFromCollection
+        in:
+          collection:
+            link: LastNames1/strings
+  Stage 3:
+    actors:
+      RandomCharacter1:
+        parent: RandomCharacter
+        in:
+          value:
+            link: Const1/value
+      RandomNumber1:
+        parent: RandomNumber
+        in:
+          minimum:
+            const: 21
+      RandomEmail1:
+        parent: RandomEmail
+        in:
+          firstName:
+            link: RandomFromCollection1/value
+          lastName:
+            link: RandomFromCollection2/value
+      Concat1:
+        parent: Concat
+        in:
+          delimiter:
+            const: _
+          elements:
+            link:
+            - path: RandomFromCollection1/value
+              pos: 0
+            - path: RandomFromCollection2/value
+              pos: 1
+  Stage 2:
+    actors:
+      DbLoad1:
+        parent: DbLoad
+        in:
+          interface:
+            const: dbCassandra
+          schema:
+            const: k2_d2d_tar_d2dprojectscass_solutions
+          table:
+            const: users
+          fields:
+            const:
+            - id
+            - address
+            - age
+            - email
+            - name
+          keys:
+            const:
+            - id
+          dialect:
+            const: cassandra
+          id:
+            link:
+              path: ForLoop1/i
+              iterate: Iterate
+            schema: integer
+            mandatory: false
+          address:
+            link: RandomCharacter1/value
+            schema: string
+            mandatory: false
+          age:
+            link: RandomNumber1/value
+            schema: integer
+            mandatory: false
+          email:
+            link: RandomEmail1/value
+            schema: string
+            mandatory: false
+          name:
+            link: Concat1/string
+            schema: string
+            mandatory: false

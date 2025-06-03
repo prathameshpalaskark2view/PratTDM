@@ -1,0 +1,1011 @@
+{
+    "tags": [
+        "d2d",
+        "d2d\flows",
+        "D2D"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [],
+                    "actors": [
+                        {
+                            "name": "Type",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "LU NAME",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Table",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Excluded Columns",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Exclude Condition",
+                            "isDisabled": true,
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Keys",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Delimiter",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Interface",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "DB Type",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 2",
+                    "dependsOnList": [],
+                    "actors": [
+                        {
+                            "name": "UppercaseExcluded",
+                            "actorType": {
+                                "parentType": "Uppercase",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Exclude Clause",
+                            "isDisabled": true,
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": " and ${where} "
+                                    },
+                                    {
+                                        "name": "where",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 13",
+                    "dependsOnList": [],
+                    "actors": [
+                        {
+                            "name": "Split Excluded",
+                            "actorType": {
+                                "parentType": "Split",
+                                "inputs": [
+                                    {
+                                        "name": "delimiter",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "DB Type To Query",
+                            "actorType": {
+                                "parentType": "Mapper",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "var sql;\nif (value == \"postgresql (Db)\") sql = \"SELECT column_name as column FROM information_schema.columns where table_name = '${@table}'\";\nelse if (value == \"fabric (Db)\") sql = \"describe table ${@luType}.${@table}\";\nelse if (value == \"cassandra (Db)\") sql = \"select column_name as column from system_schema.columns  where keyspace_name = '${@luType}' and table_name = '${@table}'\";\n\nsql;"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "values",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "IfElse1",
+                            "isDisabled": true,
+                            "actorType": {
+                                "parentType": "IfElse",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 6",
+                    "dependsOnList": [],
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "Get Columns from SRC",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "luType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "table",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "schema": {
+                                                        "type": "string"
+                                                    },
+                                                    "table": {
+                                                        "type": "string"
+                                                    },
+                                                    "column": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    },
+                                                    "nullable": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "default": {
+                                                        "type": "string"
+                                                    },
+                                                    "pk": {
+                                                        "type": "boolean"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 4",
+                    "dependsOnList": [],
+                    "actors": [
+                        {
+                            "name": "Mapper1",
+                            "actorType": {
+                                "parentType": "Mapper",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "value.toUpperCase()"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "values",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 5",
+                    "dependsOnList": [],
+                    "actors": [
+                        {
+                            "name": "Filter Columns",
+                            "actorType": {
+                                "parentType": "Filter",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "excludeList.indexOf(value) === -1"
+                                    },
+                                    {
+                                        "name": "excludeList",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "values",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 10",
+                    "dependsOnList": [],
+                    "actors": [
+                        {
+                            "name": "Build Columns",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": " ${column}  as \"${env}_${column}\""
+                                    },
+                                    {
+                                        "name": "column",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "env",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 7",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "Append Columns",
+                            "actorType": {
+                                "parentType": "StringBuild",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 8",
+                    "dependsOnList": [],
+                    "actors": [
+                        {
+                            "name": "Split Customized Keys",
+                            "actorType": {
+                                "parentType": "Split",
+                                "inputs": [
+                                    {
+                                        "name": "delimiter",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 9",
+                    "dependsOnList": [],
+                    "actors": [
+                        {
+                            "name": "Build Keys",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": " ${key} = ? "
+                                    },
+                                    {
+                                        "name": "key",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 11",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "Append Keys",
+                            "actorType": {
+                                "parentType": "StringBuild",
+                                "inputs": [
+                                    {
+                                        "name": "delimiter",
+                                        "const": "and"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 12",
+                    "dependsOnList": [],
+                    "actors": [
+                        {
+                            "name": "Query",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "select ${columns} from ${schema}.${table} where ${keys} ${and}"
+                                    },
+                                    {
+                                        "name": "columns",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "keys",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "and",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "table",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "Type",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Build Columns",
+                "name": "env"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "LU NAME",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Get Columns from SRC",
+                "name": "luType"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "LU NAME",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Query",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Table",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Get Columns from SRC",
+                "name": "table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Table",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Query",
+                "name": "table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Excluded Columns",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "UppercaseExcluded",
+                "name": "string"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Exclude Condition",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Exclude Clause",
+                "name": "where"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Exclude Condition",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IfElse1",
+                "name": "test"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Keys",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Split Customized Keys",
+                "name": "string"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Delimiter",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Split Excluded",
+                "name": "delimiter"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Delimiter",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Split Customized Keys",
+                "name": "delimiter"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Interface",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Get Columns from SRC",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DB Type",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "DB Type To Query",
+                "name": "values"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "UppercaseExcluded",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Split Excluded",
+                "name": "string"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Exclude Clause",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "IfElse1",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Split Excluded",
+                "name": "strings"
+            },
+            "rightPort": {
+                "actor": "Filter Columns",
+                "name": "excludeList"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DB Type To Query",
+                "name": "values"
+            },
+            "rightPort": {
+                "actor": "Get Columns from SRC",
+                "name": "sql"
+            },
+            "iterate": "First"
+        },
+        {
+            "leftPort": {
+                "actor": "IfElse1",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Query",
+                "name": "and"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Get Columns from SRC",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Mapper1",
+                "name": "values"
+            },
+            "path": [
+                "column"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Mapper1",
+                "name": "values"
+            },
+            "rightPort": {
+                "actor": "Filter Columns",
+                "name": "values"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Filter Columns",
+                "name": "values"
+            },
+            "rightPort": {
+                "actor": "Build Columns",
+                "name": "column"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "Build Columns",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Append Columns",
+                "name": "input"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Append Columns",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Query",
+                "name": "columns"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Split Customized Keys",
+                "name": "strings"
+            },
+            "rightPort": {
+                "actor": "Build Keys",
+                "name": "key"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "Build Keys",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Append Keys",
+                "name": "input"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Append Keys",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Query",
+                "name": "keys"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "env_prefix"
+            },
+            "rightPort": {
+                "actor": "Type",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "luType"
+            },
+            "rightPort": {
+                "actor": "LU NAME",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "sourceTableName"
+            },
+            "rightPort": {
+                "actor": "Table",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "excludedColumnsNames"
+            },
+            "rightPort": {
+                "actor": "Excluded Columns",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "excludeCondition"
+            },
+            "rightPort": {
+                "actor": "Exclude Condition",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "customizedKeyComparison"
+            },
+            "rightPort": {
+                "actor": "Keys",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "delimiter"
+            },
+            "rightPort": {
+                "actor": "Delimiter",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "interface"
+            },
+            "rightPort": {
+                "actor": "Interface",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "dbType"
+            },
+            "rightPort": {
+                "actor": "DB Type",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Query",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "sql"
+            }
+        }
+    ]
+}

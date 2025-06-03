@@ -1,0 +1,777 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Input",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "PopulationArgs",
+                            "actorType": {
+                                "parentType": "PopulationArgs",
+                                "readOnly": true,
+                                "inputs": [
+                                    {
+                                        "name": "iid",
+                                        "schema": {}
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "parent_rows",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "iid": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Source",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Instance Not Found",
+                            "actorType": {
+                                "parentType": "DbFetchField",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "Select match_result\r\nFrom D2D_FIELD_SUMMARY\r\nWhere match_result In ('Instance Not Found In Source',\r\n  'Instance Not Found In Target')"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Table Summary Rows",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "select EXECUTION_ID, IID, SOURCE_TABLE_NAME, TARGET_TABLE_NAME, sum(MATCH) as NUMBER_OF_RECORDS_MATCH,  sum(MISMATCH) as NUMBER_OF_RECORDS_MISMATCH, sum(NOFOIS) as NUMBER_OF_RECORDS_ONLY_IN_SOURCE, sum(NOFOIT) as NUMBER_OF_RECORDS_ONLY_IN_TARGET, sum(NOFUIT) as NUMBER_OF_RECORDS_UNSECURED_IN_TARGET from (\r\n\tSELECT D2D_RECORD_SUMMARY.EXECUTION_ID, D2D_RECORD_SUMMARY.IID, D2D_RECORD_SUMMARY.SOURCE_TABLE_NAME, D2D_RECORD_SUMMARY.TARGET_TABLE_NAME,\r\n\tcase when NUMBER_OF_FIELDS_MISMATCH > 0 then 1 else 0 END MISMATCH, \r\n\tcase when NUMBER_OF_FIELDS_MISMATCH = 0 and NUMBER_OF_FIELDS_ONLY_IN_TARGET = 0 and NUMBER_OF_FIELDS_ONLY_IN_SOURCE = 0 then 1 else 0 END 'MATCH',\r\n\tcase when NUMBER_OF_FIELDS_ONLY_IN_TARGET > 0 then 1 else 0 END NOFOIT, \r\n\tcase when NUMBER_OF_FIELDS_ONLY_IN_SOURCE > 0 then 1 else 0 END NOFOIS,\r\n\tcase when NUMBER_OF_FIELDS_UNSECURED_IN_TARGET > 0 then 1 else 0 END NOFUIT \r\n\tFROM D2D_RECORD_SUMMARY group by D2D_RECORD_SUMMARY.EXECUTION_ID, D2D_RECORD_SUMMARY.IID, D2D_RECORD_SUMMARY.SOURCE_TABLE_NAME, D2D_RECORD_SUMMARY.TARGET_TABLE_NAME, D2D_RECORD_SUMMARY.CUSTOMIZED_KEY\r\n)  group by EXECUTION_ID, IID, SOURCE_TABLE_NAME, TARGET_TABLE_NAME"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "EXECUTION_ID": {
+                                                        "type": "string"
+                                                    },
+                                                    "IID": {
+                                                        "type": "string"
+                                                    },
+                                                    "SOURCE_TABLE_NAME": {
+                                                        "type": "string"
+                                                    },
+                                                    "TARGET_TABLE_NAME": {
+                                                        "type": "string"
+                                                    },
+                                                    "total_records_mismatch": {
+                                                        "type": "integer"
+                                                    },
+                                                    "total_records_match": {
+                                                        "type": "integer"
+                                                    },
+                                                    "total_records_not_found_target": {
+                                                        "type": "integer"
+                                                    },
+                                                    "total_records_not_found_source": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Summary Table Map",
+                            "actorType": {
+                                "parentType": "GetSchema",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Each Row",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Row",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "EXECUTION_ID": {
+                                                    "type": "string"
+                                                },
+                                                "IID": {
+                                                    "type": "string"
+                                                },
+                                                "SOURCE_TABLE_NAME": {
+                                                    "type": "string"
+                                                },
+                                                "TARGET_TABLE_NAME": {
+                                                    "type": "string"
+                                                },
+                                                "NUMBER_OF_RECORDS_MATCH": {
+                                                    "type": "integer"
+                                                },
+                                                "NUMBER_OF_RECORDS_MISMATCH": {
+                                                    "type": "integer"
+                                                },
+                                                "NUMBER_OF_RECORDS_ONLY_IN_SOURCE": {
+                                                    "type": "integer"
+                                                },
+                                                "NUMBER_OF_RECORDS_ONLY_IN_TARGET": {
+                                                    "type": "integer"
+                                                },
+                                                "NUMBER_OF_RECORDS_UNSECURED_IN_TARGET": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Row Counter",
+                            "actorType": {
+                                "parentType": "PopulationCount",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Check Match Result",
+                    "dependsOnList": [
+                        "Each Row"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Instance Found",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "IsNull",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Is Matched",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": {
+                                            "userCode": "var rs;\r\nif( mismatch == 0 && source == 0 && target == 0){\r\n    rs = 'Match';\r\n}else{\r\n    rs = 'Mismatch';\r\n}",
+                                            "script": "var rs;\n\nif (mismatch == 0 && source == 0 && target == 0) {\n  rs = 'Match';\n} else {\n  rs = 'Mismatch';\n}"
+                                        }
+                                    },
+                                    {
+                                        "name": "mismatch",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    {
+                                        "name": "source",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    {
+                                        "name": "target",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Not Found",
+                    "dependsOnList": [
+                        "Each Row"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "Instance Not Found Value",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Load To D2D_TABLE_SUMMARY",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "Check Report Condition",
+                            "condition": "insert",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwCheckReportCondition"
+                                    },
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "insert",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "D2D LU Results",
+                            "actorType": {
+                                "parentType": "DbLoad",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": "D2D_TABLE_SUMMARY"
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            "EXECUTION_ID",
+                                            "IID",
+                                            "SOURCE_TABLE_NAME",
+                                            "TARGET_TABLE_NAME",
+                                            "NUMBER_OF_RECORDS_MATCH",
+                                            "NUMBER_OF_RECORDS_MISMATCH",
+                                            "NUMBER_OF_RECORDS_ONLY_IN_SOURCE",
+                                            "NUMBER_OF_RECORDS_ONLY_IN_TARGET",
+                                            "NUMBER_OF_RECORDS_UNSECURED_IN_TARGET",
+                                            "MATCH_RESULT"
+                                        ]
+                                    },
+                                    {
+                                        "name": "EXECUTION_ID",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "IID",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "SOURCE_TABLE_NAME",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "TARGET_TABLE_NAME",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "NUMBER_OF_RECORDS_MATCH",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "NUMBER_OF_RECORDS_MISMATCH",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "NUMBER_OF_RECORDS_ONLY_IN_SOURCE",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "NUMBER_OF_RECORDS_ONLY_IN_TARGET",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "MATCH_RESULT",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "NUMBER_OF_RECORDS_UNSECURED_IN_TARGET",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "D2D Validation Results",
+                            "actorType": {
+                                "parentType": "DbLoad",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric",
+                                        "isDefault": true
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            "execution_id",
+                                            "iid",
+                                            "source_table_name",
+                                            "target_table_name",
+                                            "number_of_records_match",
+                                            "number_of_records_mismatch",
+                                            "number_of_records_only_in_source",
+                                            "number_of_records_only_in_target",
+                                            "number_of_records_unsecured_in_target",
+                                            "match_result"
+                                        ]
+                                    },
+                                    {
+                                        "name": "keys",
+                                        "const": [
+                                            "execution_id",
+                                            "iid",
+                                            "source_table_name",
+                                            "target_table_name"
+                                        ]
+                                    },
+                                    {
+                                        "name": "execution_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "iid",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "source_table_name",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "target_table_name",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "number_of_records_match",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "number_of_records_mismatch",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "number_of_records_only_in_source",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "number_of_records_only_in_target",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "match_result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "number_of_records_unsecured_in_target",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "Instance Not Found",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Instance Not Found Value",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Instance Not Found",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Instance Found",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Table Summary Rows",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Row",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "Summary Table Map",
+                "name": "map"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Results",
+                "name": "interface"
+            },
+            "path": [
+                "interface_name"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Summary Table Map",
+                "name": "map"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Results",
+                "name": "schema"
+            },
+            "path": [
+                "schema_name"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Summary Table Map",
+                "name": "map"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Results",
+                "name": "table"
+            },
+            "path": [
+                "table_name"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Row",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D LU Results",
+                "name": "params"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Row",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Is Matched",
+                "name": "mismatch"
+            },
+            "path": [
+                "NUMBER_OF_RECORDS_MISMATCH"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Row",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Is Matched",
+                "name": "source"
+            },
+            "path": [
+                "NUMBER_OF_RECORDS_ONLY_IN_SOURCE"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Row",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Is Matched",
+                "name": "target"
+            },
+            "path": [
+                "NUMBER_OF_RECORDS_ONLY_IN_TARGET"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Row",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D LU Results",
+                "name": "NUMBER_OF_RECORDS_UNSECURED_IN_TARGET"
+            },
+            "path": [
+                "NUMBER_OF_RECORDS_UNSECURED_IN_TARGET"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Row",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Results",
+                "name": "params"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Row",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Results",
+                "name": "number_of_records_unsecured_in_target"
+            },
+            "path": [
+                "NUMBER_OF_RECORDS_UNSECURED_IN_TARGET"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Is Matched",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "D2D LU Results",
+                "name": "MATCH_RESULT"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Is Matched",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Results",
+                "name": "match_result"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Is Matched",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Check Report Condition",
+                "name": "result"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Instance Not Found Value",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D Validation Results",
+                "name": "match_result"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Instance Not Found Value",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "D2D LU Results",
+                "name": "MATCH_RESULT"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "iid"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "iid"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table"
+            },
+            "rightPort": {
+                "actor": "Summary Table Map",
+                "name": "table_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "Summary Table Map",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "Check Report Condition",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "D2D LU Results",
+                "name": "schema"
+            }
+        }
+    ]
+}

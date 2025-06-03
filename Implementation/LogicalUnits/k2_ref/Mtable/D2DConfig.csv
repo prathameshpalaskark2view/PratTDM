@@ -1,0 +1,15 @@
+Lu_Name,Source_Table_Name,Column_Mapping,Source_Transformation_Function_Name,source_columns_to_Ignore_null,Target_Table_Name,Target_Transformation_Function_Name,target_columns_to_Ignore_null,Customized_Key_Comparison,Mismatch_Columns,Excluded_Columns_Names,Active,Mode,Excluded_Rows_Sql
+CRM,customer,,,,customer,,,customer_id,,,TRUE,EXACT,
+CRM,contract,,,,contract,,,contract_id,,ASSOCIATED_LINE|TO_DATE,TRUE,EXACT,contract_id != 6
+CRM,activity,,,,activity,,,activity_id|customer_id,,,TRUE,EXACT,
+CRM,address,,zip:address_zip_trans,STREET_ADDRESS_2,address,zip:address_zip_trans,,address_id,,,TRUE,EXACT,
+CRM,cases,,,,cases,,,case_id,,,TRUE,EXACT,
+CRM,case_note,,,,case_note,,,note_id,,,TRUE,EXACT,
+Billing,balance,,,,balance,,,,,,,THRESHOLD_5,
+TestLU,customer,,,,customer,,,customer_id,,,,,
+TestLU,activity,,,,activity,,,activity_id|customer_id,,,,,
+TestLU,cases,,,,cases,,,case_id,,,,,
+common,oldaddress,,,,addressref,,,address_id,,STREET_ADDRESS_2,TRUE,,address_id <= 10
+RemoteCassandra,devicestable_a,,,,devicestable_b,,,TAC,,CPU,TRUE,,tac >= 35900000 and tac <= 35922000 allow filtering
+Cassandra,users,name:address,,,users,,,id,,,TRUE,,
+Dummy,users,name:address|address:name,,,users,,,id,,,TRUE,,

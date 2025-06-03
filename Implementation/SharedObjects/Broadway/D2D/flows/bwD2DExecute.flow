@@ -1,0 +1,161 @@
+tags: d2dv2,d2d,D2D
+stages:
+  Init:
+    actors:
+      Execution Mode:
+        parent: Const
+        remark: |-
+          Read input parameter - Extract or Direct.
+          * Extract - execute GET for IID in both data sources and compare LU tables
+          * Direct - execute get for IID to populate TAR_ tables only for PKs and compare tables in DB directly
+        in:
+          value:
+            const: null
+            external: execution_mode
+        out:
+          value:
+            schema: string
+      IID:
+        parent: Const
+        in:
+          value:
+            const: null
+            external: iid
+            schema: string
+        out:
+          value:
+            schema: string
+      EXECUTION_ID:
+        parent: FabricSetRead
+        in:
+          key:
+            const: EXECUTION_ID
+      Get LU Name:
+        parent: LuFunction
+        in:
+          functionName:
+            const: fnGetLuType
+        out:
+          luType:
+            schema: string
+  Execute:
+    transactional: false
+    actors:
+      ErrorHandler:
+        parent: ErrorHandler
+        error: result
+        in:
+          config:
+            const:
+            - exceptionKey: java.lang.Exception
+              conditions:
+                message: .*
+              actions:
+                suppress: false
+                log: true
+                flowName: bwD2DLogError
+          execution_id:
+            link: EXECUTION_ID/result
+            schema: string
+            mandatory: false
+          message:
+            const: '##### Error: '
+            schema: string
+            mandatory: false
+      FieldsSummary:
+        parent: InnerFlow
+        in:
+          flowName:
+            const: bwD2DFieldsSummary
+          innerFlowClose:
+            const: false
+          lu_name:
+            link: Get LU Name/luType
+            schema: string
+            mandatory: false
+          execution_mode:
+            link: Execution Mode/value
+            schema: string
+            mandatory: false
+          iid:
+            link: IID/value
+            schema: string
+            mandatory: false
+      RecordsSummary:
+        parent: InnerFlow
+        in:
+          flowName:
+            const: bwD2DRecordSummary
+          luType:
+            link: Get LU Name/luType
+            schema: string
+            mandatory: false
+          iid:
+            link: IID/value
+            schema: string
+            mandatory: false
+      TablesSummary:
+        parent: InnerFlow
+        in:
+          flowName:
+            const: bwD2DTableSummary
+          luType:
+            link: Get LU Name/luType
+            schema: string
+            mandatory: false
+          iid:
+            link: IID/value
+            schema: string
+            mandatory: false
+      EntitiesSummary:
+        parent: InnerFlow
+        in:
+          flowName:
+            const: bwD2DEntitySummary
+          lu_name:
+            link: Get LU Name/luType
+            schema: string
+            mandatory: false
+          iid:
+            link: IID/value
+            schema: string
+            mandatory: false
+  Report:
+    transactional: false
+    actors:
+      Excel - PrintD2Dv2Result:
+        parent: InnerFlow
+        disabled: true
+        in:
+          flowName:
+            const: bwPrintD2Dv2Result
+          taskExecutionID:
+            link: EXECUTION_ID/result
+            schema: string
+            mandatory: false
+          file_type:
+            const: xlsx
+            schema: string
+            editor:
+              id: com.k2view.dropdown
+              options:
+              - xlsx
+              - xls
+            mandatory: false
+          luName:
+            link: Get LU Name/luType
+            schema: string
+            editor:
+              id: com.k2view.logicalUnit
+            mandatory: false
+          strict:
+            const: false
+            schema: boolean
+            mandatory: false
+          iid:
+            const: ''
+            schema: string
+            mandatory: false
+        out:
+          filename:
+            schema: string
